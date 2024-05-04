@@ -21,7 +21,7 @@ export default function NavbarComponent() {
             <Avatar alt="User settings" img="https://img.icons8.com/puffy-filled/32/user.png" rounded />
           }
         >
-          {/* Ini juga harusnya berunbah sesuai token */}
+          {/* Ini juga harusnya berubah sesuai token */}
           {/* <Dropdown.Header>
             <span className="block text-sm">Bonnie Green</span>
             <span className="block truncate text-sm font-medium">name@flowbite.com</span>
