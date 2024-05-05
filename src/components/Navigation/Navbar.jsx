@@ -1,49 +1,77 @@
 "use client";
-import { Avatar, Dropdown, Navbar } from "flowbite-react";
+import { Avatar, Button, Dropdown, Navbar } from "flowbite-react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { getProfile, logout } from "../../redux/actions/auth";
 
 export default function NavbarComponent() {
   
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const { user, token } = useSelector((state) => state.auth)
+
+  useEffect(() => {
+    // get user profile if we have token
+    dispatch(getProfile(null, null, null))
+  }, [dispatch, token])
   
   
   
   return (
     <Navbar className="bg-slate-200" rounded>
-      <Navbar.Brand href="https://flowbite-react.com">
+      <Navbar.Brand as={Link} to={'/'}>
         <img src="/assets/logo-bcr.png" className="mr-3 h-6 sm:h-9" alt="Logonya BCR" />
       </Navbar.Brand>
       <div className="flex md:order-2 items-center cursor-pointer">
-        <p className="mr-3">Guest</p>
-        <Dropdown
-          arrowIcon={false}
-          inline
-          label={
-            // ini nanti akan berubah sesuai token (harusnya gituu)
-            <Avatar alt="User settings" img="https://img.icons8.com/puffy-filled/32/user.png" rounded />
-          }
-        >
-          {/* Ini juga harusnya berubah sesuai token */}
-          {/* <Dropdown.Header>
-            <span className="block text-sm">Bonnie Green</span>
-            <span className="block truncate text-sm font-medium">name@flowbite.com</span>
-          </Dropdown.Header>
-          <Dropdown.Item>Dashboard</Dropdown.Item>
-          <Dropdown.Item>Settings</Dropdown.Item>
-          <Dropdown.Item>Earnings</Dropdown.Item>
-          <Dropdown.Divider />
-          <Dropdown.Item>Sign out</Dropdown.Item> */}
-
-          {/* saat ini */}
-          <Dropdown.Item>Login</Dropdown.Item>
-          <Dropdown.Item>Register</Dropdown.Item>
-        </Dropdown>
+        {user ? (
+          <>
+            <p className="mr-3">{user?.name}</p>
+            <Dropdown
+                arrowIcon={false}
+                inline
+                label={
+                  // ini nanti akan berubah sesuai token (harusnya gituu)
+                  <Avatar alt="User settings" img={user?.photo} rounded />
+                }
+              >
+                {
+                  user?.roles == 'user' ? (
+                    <>
+                      <Dropdown.Item as={Link} to={'/profile'}>Profile</Dropdown.Item>
+                      <Dropdown.Divider />
+                      <Dropdown.Item onClick={() => {
+                          dispatch(logout())
+                          navigate('/login')
+                        }}>Log Out
+                      </Dropdown.Item>
+                    </>
+                  ) : (
+                    <>
+                      <Dropdown.Item as={Link} to={'/profile'}>Profile</Dropdown.Item>
+                      <Dropdown.Item as={Link} to={'/dashboard'}>Dashboard</Dropdown.Item>
+                      <Dropdown.Divider />
+                      <Dropdown.Item onClick={() => {
+                          dispatch(logout())
+                          navigate('/login')
+                        }}>Log Out
+                      </Dropdown.Item>
+                    </>
+                  )
+                }
+            </Dropdown> 
+          </>
+        ) : (
+          <>
+            <Button className="mx-2" as={Link} to={'/register'} color="gray">Register</Button>
+            <Button className="mx2" as={Link} to={'/login'} label="2">Login</Button>
+          </>
+        )
+        
+      }
         <Navbar.Toggle />
       </div>
-      <Navbar.Collapse>
-        <Navbar.Link href="#" active>
-          Home
-        </Navbar.Link>
-        <Navbar.Link href="#">Dashboard</Navbar.Link>
-      </Navbar.Collapse>
     </Navbar>
   )
 }

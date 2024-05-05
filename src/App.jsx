@@ -13,6 +13,9 @@ import Dashboard from './pages/Dashboard';
 import UsersData from './pages/DashMenu/UsersData';
 import CarsData from './pages/DashMenu/CarsData';
 import NewCar from './pages/DashMenu/NewCar';
+import { Provider } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
+import store from './redux/store';
 
 const router = createBrowserRouter([
   {
@@ -84,8 +87,10 @@ const router = createBrowserRouter([
 
 export default function App() {
   return (
-    <>
+    <Provider store={store}>
       <RouterProvider router={router} />
-    </>
+
+      <ToastContainer theme="colored" />
+    </Provider>
   )
 }

@@ -2,6 +2,7 @@
 import { Avatar, Sidebar } from "flowbite-react";
 import { HiUser } from "react-icons/hi";
 import { IoCarSport } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
 export default function SidebarComponent() {
   return (
@@ -18,12 +19,12 @@ export default function SidebarComponent() {
         </Sidebar.ItemGroup>
         
         <Sidebar.ItemGroup>
-          <Sidebar.Item href="#" icon={HiUser}>
+          <Sidebar.Item as={Link} to={'/dashboard/users'}  icon={HiUser}>
             Users
           </Sidebar.Item>
           <Sidebar.Collapse icon={IoCarSport} label="Cars">
-            <Sidebar.Item href="#">List Cars</Sidebar.Item>
-            <Sidebar.Item href="#">Add Cars</Sidebar.Item>
+            <Sidebar.Item as={Link} to={'/dashboard/cars'} >List Cars</Sidebar.Item>
+            <Sidebar.Item as={Link} to={'/dashboard/newCar'} >Add Cars</Sidebar.Item>
           </Sidebar.Collapse>
         </Sidebar.ItemGroup>
       </Sidebar.Items>
