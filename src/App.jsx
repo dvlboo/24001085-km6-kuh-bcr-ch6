@@ -1,5 +1,9 @@
-// dependencies
+// source
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
+import store from './redux/store';
+import 'react-toastify/dist/ReactToastify.css';
 
 // components
 import NavbarComponent from './components/Navigation/Navbar';
@@ -13,9 +17,7 @@ import Dashboard from './pages/Dashboard';
 import UsersData from './pages/DashMenu/UsersData';
 import CarsData from './pages/DashMenu/CarsData';
 import NewCar from './pages/DashMenu/NewCar';
-import { Provider } from 'react-redux';
-import { ToastContainer } from 'react-toastify';
-import store from './redux/store';
+import CarInfo from './pages/CarInfo';
 
 const router = createBrowserRouter([
   {
@@ -48,6 +50,14 @@ const router = createBrowserRouter([
     element :(
       <>
         <Profile/>
+      </>
+    )
+  },
+  {
+    path : '/cars/:id',
+    element :(
+      <>
+        <CarInfo/>
       </>
     )
   },

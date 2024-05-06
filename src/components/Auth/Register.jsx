@@ -3,12 +3,38 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 import { useState } from "react";
 import { FileInput, Label } from 'flowbite-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigation } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { register } from '../../redux/actions/auth';
+import { useDispatch } from 'react-redux';
 
 
 export default function RegisterComponent() {
 
+  const navigate = useNavigation()
+  const dispatch = useDispatch()
+  
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [confirmPass, setConfirmPass] = useState("")
+  const [photo, setPhoto] = useState()
+  const [isLoading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false);
+
+  const onSubmit = async (e) => {
+    e.preventDefault()
+
+    if (password != confirmPass) {
+      return toast.error(`Password Must Be Same`)
+    }
+
+    // dispatch the register action
+    dispatch(
+      register(navigate, email, password, name, photo, setLoading)
+    )
+  }
+
 
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -24,21 +50,18 @@ export default function RegisterComponent() {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6" action="#" method="POST">
-          
+        <form className="space-y-6" onSubmit={onSubmit}>
           <div>
             <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
               Name
             </label>
             <div className="mt-2">
               <input
-                id="name"
-                name="name"
-                type="text"
-                autoComplete="name"
+                type='text'
                 placeholder='Your Name'
-                required
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                value={name} onChange={(e) => setName(e.target.value)}
+                required
               />
             </div>
           </div>
@@ -49,22 +72,20 @@ export default function RegisterComponent() {
             </label>
             <div className="mt-2">
               <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
+                type='email'
                 placeholder='YourEmail@email.com'
-                required
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                value={email} onChange={(e) => setEmail(e.target.value)}
+                required
               />
             </div>
           </div>
 
           <div>
             <div>
-              <Label htmlFor="file-upload-helper-text" value="Upload file" />
+              <Label value="Upload file" />
             </div>
-            <FileInput id="file-upload-helper-text" helperText="SVG, PNG, JPG or GIF (MAX. 800x400px)." />
+            <FileInput onChange={(e) => setPhoto(e.target.files[0])} helperText="SVG, PNG, JPG or GIF (MAX. 800x400px)." />
           </div>
 
           <div>
@@ -75,24 +96,15 @@ export default function RegisterComponent() {
             </div>
             <div className="mt-2 relative rounded-md shadow-sm">
               <input
-                id="password"
-                name="password"
                 type={showPassword ? "text" : "password"}
-                autoComplete="current-password"
                 placeholder='Your Secret Password'
-                required
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6 pr-10"
+                value={password} onChange={(e) => setPassword(e.target.value)}
+                required
               />
               <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
-                <input
-                  id="showPassword"
-                  name="showPassword"
-                  type="checkbox"
-                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                  onChange={() => setShowPassword(!showPassword)}
-                />
                 <label htmlFor="showPassword" className="ml-2 text-gray-700">
-                  <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
+                  <FontAwesomeIcon onChange={() => setShowPassword(!showPassword)} icon={showPassword ? faEye : faEyeSlash} className='hover:cursor-pointer'/>
                 </label>
               </div>
             </div>
@@ -106,13 +118,11 @@ export default function RegisterComponent() {
             </div>
             <div className="mt-2 relative rounded-md shadow-sm">
               <input
-                id="password"
-                name="password"
                 type={showPassword ? "text" : "password"}
-                autoComplete="current-password"
                 placeholder='Repeat Password'
-                required
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6 pr-10"
+                value={confirmPass} onChange={(e) => setConfirmPass(e.target.value)}
+                required
               />
               <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
                 <input
@@ -133,8 +143,9 @@ export default function RegisterComponent() {
             <button
               type="submit"
               className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              disabled={isLoading}
             >
-              Register
+              {isLoading ? "Processing..." : "Register"}
             </button>
           </div>
         </form>

@@ -74,7 +74,7 @@ export const register =
       localStorage.setItem("token", token)
 
       // redirect to home
-      navigate("/")
+      navigate('/')
     }
     catch (error) {
       toast.error(error?.response?.data?.message)

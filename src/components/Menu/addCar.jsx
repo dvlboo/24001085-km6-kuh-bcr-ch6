@@ -1,6 +1,28 @@
 import { Card, FileInput, FloatingLabel, Label, Select } from "flowbite-react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { addCar } from "../../redux/actions/cars";
 
 export default function AddCarComponent() {
+  
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const [ name, setName ] = useState("")
+  const [ rent, setRent ] = useState()
+  const [ photo, setPhoto ] = useState()
+  const [ size, setSize ] = useState()
+  const [isLoading, setLoading] = useState(false)
+  
+
+  const onSubmit = async (e) => {
+    e.preventDefault()
+
+    dispatch(
+      addCar(navigate, name, rent, photo, size, setLoading)
+    )
+  }
   return (
     <div className="container">
       <Card>
@@ -11,32 +33,32 @@ export default function AddCarComponent() {
         </div>
 
         <div className="mt-3 mx-auto w-full max-w-sm">
-          <form className="space-y-6" action="#" method="POST">
+          <form className="space-y-6" onSubmit={onSubmit} >
             
             <div className="my-2">
-              <FloatingLabel variant="outlined" label="Car Name" type="text" />
+              <FloatingLabel variant="outlined" label="Car Name" type="text" value={name} onChange={(e) => setName(e.target.value)} />
             </div>
 
             <div className="my-2">
-              <FloatingLabel variant="outlined" label="Rent per Day" type="number" />
+              <FloatingLabel variant="outlined" label="Rent per Day" type="number" value={rent} onChange={(e) => setRent(e.target.value)}/>
             </div>
 
             <div>
               <div>
                 <Label value="Upload file" />
               </div>
-              <FileInput id="photo"/>
+              <FileInput id="photo" onChange={(e) => setPhoto(e.target.files[0])}/>
             </div>
             
             <div>
               <div>
                 <Label value="Size" />
               </div>
-              <Select id="size" required>
+              <Select id="size" onChange={(e) => setSize(e.target.value)} required>
                 <option hidden>Choose Size</option>
                 <option value={1}>Small</option>
                 <option value={2}>Medium</option>
-                <option value={3}>Large</option>
+                <option value={4}>Large</option>
               </Select>
             </div>
 
@@ -44,8 +66,9 @@ export default function AddCarComponent() {
               <button
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                disabled={isLoading}
               >
-                Add Car
+                {isLoading ? "Processing..." : "Add Car"}
               </button>
             </div>
           </form>
