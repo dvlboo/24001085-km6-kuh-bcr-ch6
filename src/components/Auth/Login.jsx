@@ -42,7 +42,7 @@ export default function LoginComponent() {
           <form className="space-y-6" onSubmit={onSubmit}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-                Email address
+                Email Address
               </label>
               <div className="mt-2">
                 <input

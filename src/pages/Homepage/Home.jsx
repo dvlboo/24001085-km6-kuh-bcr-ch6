@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import CarsList from "../components/Cars/CarsList";
-import { getCars } from "../redux/actions/cars";
+import CarsList from "../../components/Cars/CarsList";
+import { getCars } from "../../redux/actions/cars";
 import { useEffect } from "react";
 
 export default function Home() {

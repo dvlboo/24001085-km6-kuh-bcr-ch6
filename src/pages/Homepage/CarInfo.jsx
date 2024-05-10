@@ -1,5 +1,5 @@
-import DetailCar from "../components/Cars/DetailCar";
-import NavbarComponent from "../components/Navigation/Navbar";
+import DetailCar from "../../components/Cars/DetailCar";
+import NavbarComponent from "../../components/Navigation/Navbar";
 
 export default function CarInfo() {
   return (

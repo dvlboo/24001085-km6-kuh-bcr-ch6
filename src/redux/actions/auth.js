@@ -86,31 +86,32 @@ export const register =
   }
 
 export const getProfile = 
-  (navigate, succesRedirect, errorRedirect) => async (dispatch, getState) => {
-    const state = getState()
-    const { token } = state.auth
+  (navigate, succesRedirect, errorRedirect) => 
+    async (dispatch, getState) => {
+      const state = getState()
+      const { token } = state.auth
 
-    if (!token) {
-      // because token is not valid, we'll delete it from local storage
-      dispatch(logout())
+      if (!token) {
+        // because token is not valid, we'll delete it from local storage
+        dispatch(logout())
 
-      //  if there are any error redirection we will redirect it
-      if (navigate) {
-        if (errorRedirect) {
-          navigate(errorRedirect);
+        //  if there are any error redirection we will redirect it
+        if (navigate) {
+          if (errorRedirect) {
+            navigate(errorRedirect);
+          }
         }
+        return;
       }
-      return;
-    }
 
-    let config = {
-      method: 'get',
-      maxBodyLength: Infinity,
-      url: `${import.meta.env.VITE_BE_API}/api/auth/profile`,
-      headers: { 
-        'Authorization': `Bearer ${token}`
-      }
-    };
+      let config = {
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: `${import.meta.env.VITE_BE_API}/api/auth/profile`,
+        headers: { 
+          'Authorization': `Bearer ${token}`
+        }
+      };
     
     try {
       const response = await axios.request(config);

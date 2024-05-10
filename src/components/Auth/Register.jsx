@@ -3,24 +3,26 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 import { useState } from "react";
 import { FileInput, Label } from 'flowbite-react';
-import { Link, useNavigation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { register } from '../../redux/actions/auth';
 import { useDispatch } from 'react-redux';
+import { register } from '../../redux/actions/auth';
 
 
 export default function RegisterComponent() {
 
-  const navigate = useNavigation()
+  // const navigate = useNavigation()
+  const navigate = useNavigate();
   const dispatch = useDispatch()
   
   const [name, setName] = useState("")
+  const [photo, setPhoto] = useState()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPass, setConfirmPass] = useState("")
-  const [photo, setPhoto] = useState()
-  const [isLoading, setLoading] = useState(false)
+  
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setLoading] = useState(false)
 
   const onSubmit = async (e) => {
     e.preventDefault()
@@ -85,7 +87,9 @@ export default function RegisterComponent() {
             <div>
               <Label value="Upload file" />
             </div>
-            <FileInput onChange={(e) => setPhoto(e.target.files[0])} helperText="SVG, PNG, JPG or GIF (MAX. 800x400px)." />
+            <FileInput onChange={(e) => setPhoto(e.target.files[0])} 
+              helperText="SVG, PNG, JPG or GIF (MAX. 800x400px)." 
+            />
           </div>
 
           <div>

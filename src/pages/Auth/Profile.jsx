@@ -1,5 +1,5 @@
-import ProfileComponent from "../components/Auth/Profile";
-import NavbarComponent from "../components/Navigation/Navbar";
+import ProfileComponent from "../../components/Auth/Profile";
+import NavbarComponent from "../../components/Navigation/Navbar";
 
 export default function Profile() {
   return (
